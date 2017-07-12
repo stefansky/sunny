@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>京东电梯导航</title>
+	<style>
+		*{margin: 0; padding: 0; list-style: none;}
+		.main,.f1,.f2,.f3,.f4,.f5{height: 800px; width:100%; background-color: green; font-size: 50px; text-align: center; line-height: 800px; color: #fff;}
+		.f1{background-color: darkred;}
+		.f2{background-color: orange;}
+		.f3{background-color: darkblue;}
+		.f4{background-color: purple;}
+		.f5{background-color: #f40;}
+		
+		.dianTi{position: fixed; left: 0; top: 50%; margin-top: -75p
+			x; display: none; }
+		.dianTi li{width: 30px; height: 30px; border-bottom: 1px dotted #ccc; position: relative; text-align: center; line-height: 30px; background-color: #fff; font-size: 12px;}
+		.dianTi li div{position: absolute; width: 100%; height: 100%; background-color: #fff; color: darkred; left: 0; top: 0; font-size: 12px; text-align: center; line-height: 30px; display: none;}
+		.dianTi li:hover div{background-color: darkred; color:#fff; display: 
+			block;}
+		.dianTi li.current div{display: block;}
+
+	</style>
+</head>
+<body>
+	<div class="main">京东首页</div>
+	<div class="f1">第一楼</div>
+	<div class="f2">第二楼</div>
+	<div class="f3">第三楼</div>
+	<div class="f4">第四楼</div>
+	<div class="f5">第五楼</div>
+	<ul class="dianTi">
+		<li class="current">
+			1F
+			<div>服饰</div>
+		</li>
+		<li>
+			2F
+			<div>美妆</div>
+		</li>
+		<li>
+			3F
+			<div>手机</div>
+		</li>
+		<li>
+			4F
+			<div>家电</div>
+		</li>
+		<li>
+			5F
+			<div>数码</div>
+		</li>
+	</ul>
+
+</body>
+</html>
+<script src="jquery-1.7.2.min.js"></script>
+<script>
+	$(function(){
+	//-----------------------点击电梯，让当前楼选中----------------------
+		$('.dianTi li').click(function(){
+			$(this).addClass('current').siblings().removeClass('current');
+
+			//点击几楼，跳转到对应的楼层
+			var move=($(this).index()+1)*800;
+			$('html,body').animate({scrollTop:move},500);
+
+		});
+	//-----------------------页面滚动到第一楼时才显示电梯--------------
+	var fNum=0;
+		$(window).scroll(function(){
+			//如果页面滚动距离大于首页，就显示电梯
+			var num1=$(window).scrollTop();   //滚动的高度
+			var num2=$('.main').height();    //首页的高度
+			// alert(num2);
+			if(num1>=num2){
+				//显示电梯
+				$('.dianTi').show();
+
+				//根据页面滚动的高度，计算在几楼
+				// 第一楼    800
+				// 第二楼    1600
+				// 第三楼    2400
+				fNum=parseInt(num1/800)-1;
+				// console.log(fNum);
+				$('.dianTi li').eq(fNum).addClass('current').siblings().removeClass('current');
+
+			}else{
+				//隐藏电梯
+				$('.dianTi').hide();
+			}
+		});
+
+
+	});
+
+
+</script>
